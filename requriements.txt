@@ -1,4 +1,4 @@
-graphviz==0.21
+graphviz
 pandas
 audio-recorder-streamlit==0.0.10
 SpeechRecognition==3.16.1
