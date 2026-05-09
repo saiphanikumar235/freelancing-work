@@ -87,10 +87,14 @@ with tab_up:
     if uploaded:
         raw_image = Image.open(uploaded).convert("RGB")
 
+import hashlib
 if raw_image is not None:
-    st.session_state.original_image = raw_image
-    st.session_state.bg_removed = False
-    st.session_state.result_image = None
+    new_hash = hashlib.md5(raw_image.tobytes()).hexdigest()
+    if st.session_state.get("image_hash") != new_hash:
+        st.session_state.original_image = raw_image
+        st.session_state.bg_removed = False
+        st.session_state.result_image = None
+        st.session_state.image_hash = new_hash
 
 if st.session_state.original_image:
     st.markdown("---")
