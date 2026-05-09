@@ -47,35 +47,45 @@ st.markdown("---")
 st.markdown("### 📋 Available Pages")
 
 PAGES = [
-    {"num":1,"icon":"🏢","title":"Hierarchy Manager","desc":"View & manage an 8-level org chart. Add members up to Level 5.","tags":[("✅ Built","#27ae60","#eafaf1")],"color":"#1a5276"},
-    {"num":2,"icon":"🎙️","title":"Speech to Text","desc":"Record voice, transcribe, and test accuracy with word-by-word comparison.","tags":[("✅ Built","#27ae60","#eafaf1")],"color":"#117a65"},
-    {"num":3,"icon":"🎭","title":"Speech Emotion Analyzer","desc":"Speak and detect 😡 Angry, 😊 Happy, 😢 Sad or 😐 Neutral via keyword AI.","tags":[("✅ Built","#27ae60","#eafaf1")],"color":"#8e44ad"},
-    {"num":4,"icon":"🖼️","title":"Background Remover","desc":"Camera capture + remove background locally using U2Net AI. No paid API.","tags":[("✅ Built","#27ae60","#eafaf1")],"color":"#e67e22"},
-    {"num":5,"icon":"❓","title":"Coming Soon","desc":"Tell us what you'd like on Page 5!","tags":[("🔜 Pending","#7f8c8d","#f2f3f4")],"color":"#bdc3c7"},
-    {"num":6,"icon":"❓","title":"Coming Soon","desc":"Tell us what you'd like on Page 6!","tags":[("🔜 Pending","#7f8c8d","#f2f3f4")],"color":"#bdc3c7"},
-    {"num":7,"icon":"❓","title":"Coming Soon","desc":"Tell us what you'd like on Page 7!","tags":[("🔜 Pending","#7f8c8d","#f2f3f4")],"color":"#bdc3c7"},
-    {"num":8,"icon":"❓","title":"Coming Soon","desc":"Tell us what you'd like on Page 8!","tags":[("🔜 Pending","#7f8c8d","#f2f3f4")],"color":"#bdc3c7"},
-    {"num":9,"icon":"❓","title":"Coming Soon","desc":"Tell us what you'd like on Page 9!","tags":[("🔜 Pending","#7f8c8d","#f2f3f4")],"color":"#bdc3c7"},
-    {"num":10,"icon":"❓","title":"Coming Soon","desc":"Tell us what you'd like on Page 10!","tags":[("🔜 Pending","#7f8c8d","#f2f3f4")],"color":"#bdc3c7"},
+    {"num":1,  "icon":"🏢",  "title":"Hierarchy Manager",       "desc":"View & manage an 8-level org chart. Add members up to Level 5.",                    "tags":[("✅ Built","#27ae60","#eafaf1")],           "color":"#1a5276"},
+    {"num":2,  "icon":"🎙️", "title":"Speech to Text",           "desc":"Record voice, transcribe, and test accuracy with word-by-word comparison.",          "tags":[("✅ Built","#27ae60","#eafaf1")],           "color":"#117a65"},
+    {"num":3,  "icon":"🎭",  "title":"Speech Emotion Analyzer",  "desc":"Speak and detect 😡 Angry, 😊 Happy, 😢 Sad or 😐 Neutral via keyword AI.",         "tags":[("✅ Built","#27ae60","#eafaf1")],           "color":"#8e44ad"},
+    {"num":4,  "icon":"🖼️", "title":"Background Remover",       "desc":"Camera capture + remove background locally using U2Net AI. No paid API.",            "tags":[("✅ Built","#27ae60","#eafaf1")],           "color":"#e67e22"},
+    {"num":5,  "icon":"❓",  "title":"Coming Soon",              "desc":"Tell us what you would like on Page 5!",                                              "tags":[("🔜 Pending","#7f8c8d","#f2f3f4")],        "color":"#bdc3c7"},
+    {"num":6,  "icon":"❓",  "title":"Coming Soon",              "desc":"Tell us what you would like on Page 6!",                                              "tags":[("🔜 Pending","#7f8c8d","#f2f3f4")],        "color":"#bdc3c7"},
+    {"num":7,  "icon":"❓",  "title":"Coming Soon",              "desc":"Tell us what you would like on Page 7!",                                              "tags":[("🔜 Pending","#7f8c8d","#f2f3f4")],        "color":"#bdc3c7"},
+    {"num":8,  "icon":"❓",  "title":"Coming Soon",              "desc":"Tell us what you would like on Page 8!",                                              "tags":[("🔜 Pending","#7f8c8d","#f2f3f4")],        "color":"#bdc3c7"},
+    {"num":9,  "icon":"❓",  "title":"Coming Soon",              "desc":"Tell us what you would like on Page 9!",                                              "tags":[("🔜 Pending","#7f8c8d","#f2f3f4")],        "color":"#bdc3c7"},
+    {"num":10, "icon":"❓",  "title":"Coming Soon",              "desc":"Tell us what you would like on Page 10!",                                             "tags":[("🔜 Pending","#7f8c8d","#f2f3f4")],        "color":"#bdc3c7"},
 ]
 
 cols = st.columns(2, gap="large")
 for i, page in enumerate(PAGES):
     with cols[i % 2]:
+        # Build badge HTML
         tags_html = " ".join(
-            f"<span class='badge' style='background:{bg};color:{fg}'>{label}</span>"
+            "<span class='badge' style='background:" + bg + ";color:" + fg + "'>" + label + "</span>"
             for label, fg, bg in page["tags"]
         )
-        st.markdown(
-            f"<div class='page-card' style='border-left-color:{page[\"color\"]}'>"
-            f"<div class='card-title' style='color:{page[\"color\"]}'>{page['icon']} Page {page['num']} — {page['title']}</div>"
-            f"<div class='card-desc'>{page['desc']}</div>"
-            f"<div>{tags_html}</div></div>",
-            unsafe_allow_html=True,
+        color     = page["color"]
+        icon      = page["icon"]
+        num       = page["num"]
+        title     = page["title"]
+        desc      = page["desc"]
+
+        card_html = (
+            "<div class='page-card' style='border-left-color:" + color + "'>"
+            "<div class='card-title' style='color:" + color + "'>"
+            + icon + " Page " + str(num) + " — " + title +
+            "</div>"
+            "<div class='card-desc'>" + desc + "</div>"
+            "<div>" + tags_html + "</div>"
+            "</div>"
         )
+        st.markdown(card_html, unsafe_allow_html=True)
 
 st.markdown("---")
-built = sum(1 for p in PAGES if any("✅" in t[0] for t in p["tags"]))
-st.markdown(f"### 🚦 Progress: {built} / {len(PAGES)} pages built")
+built = sum(1 for p in PAGES if any("Built" in t[0] for t in p["tags"]))
+st.markdown("### 🚦 Progress: " + str(built) + " / " + str(len(PAGES)) + " pages built")
 st.progress(built / len(PAGES))
-st.caption(f"{len(PAGES) - built} pages remaining — describe the next page to continue!")
+st.caption(str(len(PAGES) - built) + " pages remaining — describe the next page to continue!")
