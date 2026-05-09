@@ -1,13 +1,7 @@
-graphviz
+graphviz==0.21
 pandas
 audio-recorder-streamlit==0.0.10
 SpeechRecognition==3.16.1
-rembg==2.0.75
-Pillow==12.1.1
-onnxruntime==1.24.4
-numpy==2.4.4
-scipy==1.17.1
-pooch==1.9.0
-tqdm==4.67.3
-requests==2.33.1
-opencv-python-headless==4.13.0.86
+opencv-python-headless>=4.9.0.80
+Pillow>=9.0.0
+numpy>=1.24.0
