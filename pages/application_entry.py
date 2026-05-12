@@ -86,10 +86,13 @@ if "current_app" not in st.session_state or st.session_state.get("load_new", Fal
     st.session_state.load_new      = False
     st.session_state.submit_result = None
     st.session_state.val_errors    = []
+    # Change form key to force all inputs to reset
+    st.session_state.form_key      = str(id(st.session_state.current_app))
 
 if "approved_apps"  not in st.session_state: st.session_state.approved_apps  = []
 if "submit_result"  not in st.session_state: st.session_state.submit_result  = None
 if "val_errors"     not in st.session_state: st.session_state.val_errors     = []
+if "form_key"       not in st.session_state: st.session_state.form_key       = "form_default"
 
 app = st.session_state.current_app
 
@@ -159,7 +162,7 @@ st.markdown("---")
 # ══════════════════════════════════════════════════════════════════════════════
 # FORM — Section by section (paragraph → input boxes)
 # ══════════════════════════════════════════════════════════════════════════════
-with st.form("validate_form"):
+with st.form("validate_form_" + st.session_state.form_key):
 
     # ── SECTION 1: Personal Information ──────────────────────────────────────
     st.markdown("<div class='section-block'>"
@@ -350,3 +353,36 @@ else:
                 st.markdown("**⏳ Exp:** " + a["experience"] + " years")
             cb = "".join("<span class='course-badge'>" + c + "</span>" for c in a["courses"])
             st.markdown("**📚 Courses:** " + cb, unsafe_allow_html=True)
+
+# ── Download Approved Applications ───────────────────────────────────────────
+if st.session_state.approved_apps:
+    import json, io
+    import pandas as pd
+
+    df_export = pd.DataFrame([
+        {k: (", ".join(v) if isinstance(v, list) else v)
+         for k, v in a.items()}
+        for a in st.session_state.approved_apps
+    ])
+
+    st.markdown("#### 📥 Download Approved Applications")
+    dl1, dl2 = st.columns(2)
+    with dl1:
+        csv_bytes = df_export.to_csv(index=False).encode("utf-8")
+        st.download_button(
+            "⬇️ Download as CSV",
+            data=csv_bytes,
+            file_name="approved_applications.csv",
+            mime="text/csv",
+            type="primary",
+            use_container_width=True,
+        )
+    with dl2:
+        json_bytes = json.dumps(st.session_state.approved_apps, indent=2).encode("utf-8")
+        st.download_button(
+            "⬇️ Download as JSON",
+            data=json_bytes,
+            file_name="approved_applications.json",
+            mime="application/json",
+            use_container_width=True,
+        )
